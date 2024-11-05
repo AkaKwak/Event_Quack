@@ -2,6 +2,7 @@
 <p>Description : <%= @event.description %></p>
 <p>Lieu : <%= @event.location %></p>
 <p>Prix : <%= number_to_currency(@event.price) %></p>
-<%= form_with(model: [@event, Attendance.new]) do |form| %>
-  <%= form.submit "Participer" %>
+
+<%= form_with(model: [@event, @attendance]) do |form| %>
+  <%= form.submit "Rejoindre cet événement" %>
 <% end %>

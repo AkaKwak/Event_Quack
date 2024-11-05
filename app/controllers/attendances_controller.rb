@@ -1,7 +1,7 @@
 class AttendancesController < ApplicationController
   def create
     @event = Event.find(params[:event_id])
-    @attendance = @event.attendances.new(user: User.first) # Remplace par l'utilisateur connecté après ajout de Devise
+    @attendance = @event.attendances.new(user: User.first) # Utilisateur par défaut pour le moment
     @attendance.stripe_customer_id = "test_customer_id"
 
     if @attendance.save

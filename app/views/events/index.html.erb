@@ -1,8 +1,9 @@
-<h1>Liste des événements</h1>
+<h1>Événements</h1>
 <%= link_to 'Créer un nouvel événement', new_event_path %>
 
 <% @events.each do |event| %>
   <h2><%= link_to event.title, event_path(event) %></h2>
   <p><%= event.description %></p>
   <p><%= event.location %></p>
+  <p>Prix : <%= number_to_currency(event.price) %></p>
 <% end %>
