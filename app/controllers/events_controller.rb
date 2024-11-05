@@ -14,6 +14,7 @@ class EventsController < ApplicationController
   end
 
   def create
+    # request.format = :html
     @event = Event.new(event_params)
     @event.user = User.first # Utilisateur par défaut pour le moment, jusqu'à l'implémentation de Devise
 
@@ -38,6 +39,10 @@ class EventsController < ApplicationController
   def destroy
     @event.destroy
     redirect_to events_path, notice: 'Événement supprimé.'
+  end
+
+  def participant?(user)
+    participants.include?(user)
   end
 
   private

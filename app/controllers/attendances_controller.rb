@@ -1,5 +1,6 @@
 class AttendancesController < ApplicationController
   def create
+    # request.format = :html
     @event = Event.find(params[:event_id])
     @attendance = @event.attendances.new(user: User.first) # Utilisateur par défaut pour le moment
     @attendance.stripe_customer_id = "test_customer_id"
