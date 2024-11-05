@@ -1,4 +1,16 @@
-<div>
-  <h1 class="font-bold text-4xl">Events#new</h1>
-  <p>Find me in app/views/events/new.html.erb</p>
-</div>
+<h1>Nouvel Événement</h1>
+<%= form_with(model: @event) do |form| %>
+  <%= form.label :title %>
+  <%= form.text_field :title %>
+  <%= form.label :description %>
+  <%= form.text_area :description %>
+  <%= form.label :location %>
+  <%= form.text_field :location %>
+  <%= form.label :price %>
+  <%= form.number_field :price %>
+  <%= form.label :start_date %>
+  <%= form.datetime_select :start_date %>
+  <%= form.label :duration %>
+  <%= form.number_field :duration %>
+  <%= form.submit "Créer l'événement" %>
+<% end %>

@@ -1,4 +1,7 @@
-<div>
-  <h1 class="font-bold text-4xl">Events#show</h1>
-  <p>Find me in app/views/events/show.html.erb</p>
-</div>
+<h1><%= @event.title %></h1>
+<p>Description : <%= @event.description %></p>
+<p>Lieu : <%= @event.location %></p>
+<p>Prix : <%= number_to_currency(@event.price) %></p>
+<%= form_with(model: [@event, Attendance.new]) do |form| %>
+  <%= form.submit "Participer" %>
+<% end %>

@@ -1,4 +1,8 @@
-<div>
-  <h1 class="font-bold text-4xl">Events#index</h1>
-  <p>Find me in app/views/events/index.html.erb</p>
-</div>
+<h1>Liste des événements</h1>
+<%= link_to 'Créer un nouvel événement', new_event_path %>
+
+<% @events.each do |event| %>
+  <h2><%= link_to event.title, event_path(event) %></h2>
+  <p><%= event.description %></p>
+  <p><%= event.location %></p>
+<% end %>
