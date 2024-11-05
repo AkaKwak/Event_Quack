@@ -26,7 +26,7 @@ gem "better_errors"
 gem "binding_of_caller"
 end
 
-
+gem 'devise'
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
