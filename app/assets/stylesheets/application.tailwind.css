@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 /*
 
 @layer components {
@@ -11,3 +10,31 @@
 }
 
 */
+
+.flash-messages p {
+  animation: fadeIn 0.8s ease, fadeOut 0.8s ease 3.5s; /* Apparait doucement et disparait après un délai */
+  }
+  
+  @keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-10px); }
+  }
+
+  .event-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .event-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px;
+    width: calc(33.33% - 20px); /* Trois boîtes par ligne */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
