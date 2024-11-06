@@ -8,4 +8,6 @@ class User < ApplicationRecord
   has_many :attended_events, through: :attendances, source: :event
 
   validates :email, presence: true, uniqueness: true
+  validates :first_name, presence: true
+  validates :last_name, presence: true
 end
