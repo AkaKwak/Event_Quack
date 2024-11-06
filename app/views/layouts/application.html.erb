@@ -37,8 +37,8 @@
             <%= link_to "Créer un nouvel événement", new_event_path, class: "hover:text-gray-300" %>
 
             <% if user_signed_in? %>
-              <%= link_to "Mon Profil", edit_user_registration_path, class: "hover:text-gray-300" %>
-              <%= link_to "Delete", destroy_user_session_path(@resource), class: 'hover:text-gray-300 dropdown-item', data: { turbo_method: :delete, turbo_confirm: "Êtes vous sûre ?" } %>
+              <%= link_to "Mon Profil", user_path(current_user), class: "hover:text-gray-300" %>
+              <%= link_to "Déconnexion", destroy_user_session_path(@resource), class: 'hover:text-gray-300 dropdown-item', data: { turbo_method: :delete, turbo_confirm: "Êtes vous sûre ?" } %>
             <% else %>
               <%= link_to "Connexion", new_user_session_path, class: "hover:text-gray-300" %>
               <%= link_to "Inscription", new_user_registration_path, class: "hover:text-gray-300" %>
@@ -63,7 +63,7 @@
         <%= link_to "Créer un nouvel événement", new_event_path, class: "hover:text-gray-300" %>
 
         <% if user_signed_in? %>
-          <%= link_to "Mon Profil", edit_user_registration_path, class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white" %>
+          <%= link_to "Mon Profil", user_path(current_user), class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white" %>
           <%= link_to "Déconnexion", destroy_user_session_path, method: :delete, class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white" %>
         <% else %>
           <%= link_to "Connexion", new_user_session_path, class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white" %>
