@@ -16,7 +16,9 @@
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
+
 
   <body>
   <header>
@@ -36,8 +38,7 @@
 
             <% if user_signed_in? %>
               <%= link_to "Mon Profil", edit_user_registration_path, class: "hover:text-gray-300" %>
-              <%= link_to "Déconnexion", destroy_user_session_path, method: :delete, class: "hover:text-gray-300" %>
-              <%= link_to "Delete", destroy_user_session_path(@resource),class: "hover:text-gray-300", data: { turbo_method: :delete, turbo_confirm: "Êtes vous sûre ?",  } %>
+              <%= link_to "Delete", destroy_user_session_path(@resource), class: "hover:text-gray-300", data: { turbo_method: :delete, turbo_confirm: "Êtes vous sûre ?" } %>
             <% else %>
               <%= link_to "Connexion", new_user_session_path, class: "hover:text-gray-300" %>
               <%= link_to "Inscription", new_user_registration_path, class: "hover:text-gray-300" %>
@@ -79,10 +80,8 @@
       mobileMenuButton.addEventListener('click', () => {
         mobileMenu.classList.toggle('hidden');
       });
-    </script>
-
-
-    </header>
+    </script> 
+  </header>
 <div class="flash-messages">
   <% if flash[:notice] %>
     <p class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 my-4">

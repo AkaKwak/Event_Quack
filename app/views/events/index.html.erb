@@ -7,7 +7,7 @@
 <hr>
 
 <% @events.each do |event| %>
-  <div>
+  <div><br>
     <h2><%= link_to event.title, event_path(event) %></h2>
     
     <p><strong>Description :</strong> <%= event.description %></p>
@@ -18,6 +18,7 @@
     
     <p><%= link_to "Voir les détails", event_path(event) %></p>
   </div>
-  
+  <br>
   <hr>
+  <br>
 <% end %>
