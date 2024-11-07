@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
-  before_action :authorize_user!, only: [:edit, :update, :destroy]
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create]
+  before_action :authorize_user!, only: [:edit, :update, :destroy]
 
   def index
     @events = Event.all
@@ -9,6 +9,7 @@ class EventsController < ApplicationController
 
   def show
     @attendance = Attendance.new
+    @is_participant = @event.attendances.exists?(user_id: current_user.id) if user_signed_in?
   end
 
   def new
@@ -16,7 +17,6 @@ class EventsController < ApplicationController
   end
 
   def create
-    # request.format = :html
     @event = Event.new(event_params)
     @event.user = current_user
 
@@ -41,10 +41,6 @@ class EventsController < ApplicationController
   def destroy
     @event.destroy
     redirect_to events_path, notice: 'Événement supprimé.'
-  end
-
-  def participant?(user)
-    participants.include?(user)
   end
 
   private

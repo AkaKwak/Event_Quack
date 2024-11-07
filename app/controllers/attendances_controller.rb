@@ -1,9 +1,16 @@
 class AttendancesController < ApplicationController
+  before_action :authenticate_user!
+
   def create
-    # request.format = :html
     @event = Event.find(params[:event_id])
-    @attendance = @event.attendances.new(user: User.first) # Utilisateur par défaut pour le moment
-    @attendance.stripe_customer_id = "test_customer_id"
+
+    # Vérification si l'utilisateur est déjà inscrit
+    if @event.attendances.exists?(user: current_user)
+      redirect_to @event, alert: "Vous êtes déjà inscrit à cet événement."
+      return
+    end
+
+    @attendance = @event.attendances.new(user: current_user)
 
     if @attendance.save
       redirect_to @event, notice: "Vous avez rejoint l'événement."
