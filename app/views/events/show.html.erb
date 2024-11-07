@@ -1,8 +1,22 @@
-<h1><%= @event.title %></h1>
-<p>Description : <%= @event.description %></p>
-<p>Lieu : <%= @event.location %></p>
-<p>Prix : <%= number_to_currency(@event.price) %></p>
+<div class="container mx-auto mt-10 p-5 border rounded-lg shadow-lg bg-white">
+  <h1 class="text-4xl font-bold mb-4"><%= @event.title %></h1>
+  <p class="text-lg text-gray-700 mb-2"><strong>Description :</strong> <%= @event.description %></p>
+  <p class="text-lg text-gray-700 mb-2"><strong>Lieu :</strong> <%= @event.location %></p>
+  <p class="text-lg text-gray-700 mb-4"><strong>Prix :</strong> <%= number_to_currency(@event.price) %></p>
 
-<%= form_with(model: [@event, @attendance]) do |form| %>
-  <%= form.submit "Rejoindre cet événement" %>
-<% end %>
+  <p class="text-lg text-gray-700 mb-2"><strong>Nombre de participants :</strong> <%= @participant_count %></p>
+
+  <% if @is_participant %>
+    <div class="p-4 mb-4 text-green-700 bg-green-100 border border-green-400 rounded" role="alert">
+      Vous êtes déjà inscrit à cet événement.
+    </div>
+  <% else %>
+    <%= form_with(model: [@event, @attendance], local: true) do |form| %>
+      <div class="mt-4">
+        <%= form.submit "Rejoindre cet événement", class: "px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded" %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%= link_to 'Retour à la liste des événements', events_path, class: "mt-3 inline-block px-4 py-2 text-blue-700 bg-blue-100 hover:bg-blue-200 rounded" %>
+</div>

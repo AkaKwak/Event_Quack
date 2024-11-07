@@ -5,11 +5,18 @@ class EventsController < ApplicationController
 
   def index
     @events = Event.all
+    @ongoing_events_count = Event.where("start_date <= ? AND end_date >= ?", Time.current, Time.current).count
   end
 
   def show
     @attendance = Attendance.new
     @is_participant = @event.attendances.exists?(user_id: current_user.id) if user_signed_in?
+
+    # Récupérer le nombre de participants pour cet événement
+    @participant_count = @event.attendances.count
+
+    # Récupérer le nombre total d'événements en cours
+    @ongoing_events_count = Event.where("start_date <= ? AND end_date >= ?", Time.current, Time.current).count
   end
 
   def new
