@@ -3,27 +3,55 @@ class AttendancesController < ApplicationController
 
   def create
     @event = Event.find(params[:event_id])
-    
-    # Débogage : affichage des informations sur l'utilisateur et l'événement
-    puts "Current User ID: #{current_user.id}"
-    puts "Event ID: #{@event.id}"
-    
-    # Vérification si l'utilisateur est déjà inscrit
-    if @event.attendances.exists?(user: current_user)
-      puts "Attendance exists for User ID: #{current_user.id} and Event ID: #{@event.id}"
+
+    # Vérifiez si l'événement est déjà passé
+    if @event.end_date < Time.current
+      redirect_to @event, alert: "Cet événement est déjà passé et ne peut plus être rejoint."
+      return
+    end
+
+    # Vérifiez si l'utilisateur est déjà participant
+    if @event.attendances.exists?(user_id: current_user.id)
       redirect_to @event, alert: "Vous êtes déjà inscrit à cet événement."
       return
     end
 
-    @attendance = @event.attendances.new(user: current_user)
+    # Crée une session Stripe
+    session = Stripe::Checkout::Session.create(
+      payment_method_types: ['card'],
+      line_items: [{
+        price_data: {
+          currency: 'eur',
+          product_data: {
+            name: @event.title,
+            description: @event.description,
+            images: ["https://example.com/image.png"], # Vous pouvez ajouter une image ici
+          },
+          unit_amount: (@event.price * 100), # Convertir en centimes
+        },
+        quantity: 1,
+      }],
+      mode: 'payment',
+      success_url: "#{checkout_success_url}?session_id={CHECKOUT_SESSION_ID}", # Mettez à jour le chemin
+      cancel_url: "#{checkout_cancel_url}?session_id={CHECKOUT_SESSION_ID}",
+    )
+
+    redirect_to session.url, allow_other_host: true
+  end
+
+  def success
+    # Logique après un paiement réussi
+    session = Stripe::Checkout::Session.retrieve(params[:session_id])
+    @attendance = Attendance.new(user: current_user, event_id: session.metadata.event_id, stripe_customer_id: session.customer)
 
     if @attendance.save
-      puts "Attendance created successfully for User ID: #{current_user.id} and Event ID: #{@event.id}"
-      redirect_to @event, notice: "Vous avez rejoint l'événement."
+      redirect_to event_path(session.metadata.event_id), notice: "Vous avez rejoint l'événement."
     else
-      puts "Failed to create attendance for User ID: #{current_user.id} and Event ID: #{@event.id}"
-      puts @attendance.errors.full_messages # Ajoute cette ligne pour afficher les erreurs
-      redirect_to @event, alert: "Impossible de rejoindre l'événement."
+      redirect_to events_path, alert: "Erreur lors de l'inscription."
     end
+  end
+  
+  def cancel
+    redirect_to events_path, alert: "Le paiement a été annulé."
   end
 end

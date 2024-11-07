@@ -3,10 +3,22 @@ class Event < ApplicationRecord
   has_many :attendances
   has_many :users, through: :attendances
 
-  validates :start_date, presence: true
-  validates :duration, presence: true, numericality: { greater_than: 0, only_integer: true, multiple_of: 5 }
-  validates :title, presence: true, length: { in: 5..140 }
-  validates :description, presence: true, length: { in: 20..1000 }
-  validates :price, presence: true, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 1000 }
+  validates :title, presence: true
+  validates :description, presence: true
   validates :location, presence: true
+  validates :price, numericality: { greater_than: 0 }
+  validates :start_date, presence: true
+  validates :duration, numericality: { only_integer: true, greater_than: 0 }
+  validates :end_date, presence: true
+
+  # Callback pour calculer end_date avant la sauvegarde
+  before_validation :set_end_date
+
+  private
+
+  def set_end_date
+    if start_date.present? && duration.present?
+      self.end_date = start_date + duration.minutes
+    end
+  end
 end

@@ -21,7 +21,7 @@ gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
-gem "dotenv-rails"
+gem 'dotenv-rails', groups: [:development, :test]
 
 group :development do
 gem "better_errors"
@@ -29,6 +29,7 @@ gem "binding_of_caller"
 end
 
 gem 'devise'
+gem 'stripe'
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 

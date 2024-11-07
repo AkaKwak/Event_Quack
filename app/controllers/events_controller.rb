@@ -5,18 +5,13 @@ class EventsController < ApplicationController
 
   def index
     @events = Event.all
-    @ongoing_events_count = Event.where("start_date <= ? AND end_date >= ?", Time.current, Time.current).count
+    @ongoing_events_count = Event.where("start_date >= ?", Time.current).where.not(end_date: nil).count
   end
 
   def show
     @attendance = Attendance.new
     @is_participant = @event.attendances.exists?(user_id: current_user.id) if user_signed_in?
-
-    # Récupérer le nombre de participants pour cet événement
     @participant_count = @event.attendances.count
-
-    # Récupérer le nombre total d'événements en cours
-    @ongoing_events_count = Event.where("start_date <= ? AND end_date >= ?", Time.current, Time.current).count
   end
 
   def new
@@ -26,16 +21,31 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
     @event.user = current_user
-
-    if @event.save
-      redirect_to @event, notice: 'Événement créé avec succès.'
+    
+    # Vérifiez que la durée est fournie
+    if @event.start_date.present? && @event.duration.present?
+      @event.end_date = @event.start_date + @event.duration.minutes
     else
-      render :new
+      @event.errors.add(:base, "La date de début et la durée doivent être fournies.")
+      render :new and return
+    end
+  
+    # Assurez-vous que l'événement n'est pas déjà passé
+    if @event.start_date < Time.current
+      @event.errors.add(:base, "La date de début ne peut pas être dans le passé.")
+      render :new and return
+    end
+  
+    # Tentez de sauvegarder l'événement
+    if @event.save
+      redirect_to events_path, notice: 'Événement créé avec succès.'
+    else
+      puts "Erreurs lors de la création de l'événement : #{@event.errors.full_messages.join(', ')}" # Pour le debugging
+      render :new  # Affiche le formulaire à nouveau avec les messages d'erreur
     end
   end
-
-  def edit
-  end
+  
+  
 
   def update
     if @event.update(event_params)
@@ -63,6 +73,6 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:title, :description, :location, :price, :start_date, :duration)
+      params.require(:event).permit(:title, :description, :location, :price, :start_date, :duration)
   end
 end
