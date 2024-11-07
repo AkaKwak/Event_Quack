@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+  before_action :authorize_user!, only: [:edit, :update, :destroy]
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create]
 
@@ -17,7 +18,7 @@ class EventsController < ApplicationController
   def create
     # request.format = :html
     @event = Event.new(event_params)
-    @event.user = User.first # Utilisateur par défaut pour le moment, jusqu'à l'implémentation de Devise
+    @event.user = current_user
 
     if @event.save
       redirect_to @event, notice: 'Événement créé avec succès.'
@@ -47,6 +48,12 @@ class EventsController < ApplicationController
   end
 
   private
+
+  def authorize_user!
+    unless @event.user_id == current_user.id || current_user.admin?
+      redirect_to events_path, alert: "Vous n'avez pas l'autorisation d'accéder à cette page."
+    end
+  end
 
   def set_event
     @event = Event.find(params[:id])
