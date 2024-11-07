@@ -14,14 +14,12 @@
         Vous êtes déjà inscrit à cet événement.
       </div>
     <% else %>
-      <%= form_with(model: [@event, @attendance], local: true) do |form| %>
-        <div class="mt-4">
-          <%= form.submit "Rejoindre cet événement", class: "px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded" %>
-        </div>
-      <% end %>
+      <div class="mt-4">
+        <%= button_to "Rejoindre cet événement", checkout_create_path(total: @event.price, event_id: @event.id), method: :post, class: "px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded", data: { turbo: false } %>
+      </div>
     <% end %>
   <% end %>
-<%= button_to "Rejoindre cet événement", checkout_create_path(total: @event.price, event_id: @event.id), class: "btn btn-primary", data: {turbo: false} %>
 
   <%= link_to 'Retour à la liste des événements', events_path, class: "mt-3 inline-block px-4 py-2 text-blue-700 bg-blue-100 hover:bg-blue-200 rounded" %>
 </div>
+

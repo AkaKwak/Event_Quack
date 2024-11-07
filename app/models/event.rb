@@ -13,7 +13,11 @@ class Event < ApplicationRecord
 
   # Callback pour calculer end_date avant la sauvegarde
   before_validation :set_end_date
-
+  
+  def is_free?
+    price == 0
+  end
+  
   private
 
   def set_end_date
