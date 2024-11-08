@@ -5,7 +5,7 @@
 <hr class="my-4">
 
 <div class="flex flex-wrap justify-between">
-  <% @events.each do |event| %>
+  <% @events.reverse.each do |event| %>
     <div class="border border-gray-300 rounded-lg p-4 m-2 w-full md:w-1/3 shadow-md">
       <h2 class="text-xl font-semibold"><%= link_to event.title, event_path(event) %></h2>
       <p class="line-clamp-3 break-words whitespace-normal"><strong>Description :</strong> <%= event.description %></p>
