@@ -10,7 +10,7 @@
       <h2 class="text-xl font-semibold"><%= link_to event.title, event_path(event) %></h2>
       <p class="line-clamp-3 break-words whitespace-normal"><strong>Description :</strong> <%= event.description %></p>
       <p><strong>Lieu :</strong> <%= event.location %></p>
-      <p><strong>Prix :</strong> <%= number_to_currency(event.price) %></p>
+      <p><strong>Prix :</strong> <%= number_to_currency(event.price, unit: "€") %></p>
       <p><strong>Date de début :</strong> <%= event.start_date.strftime("%d %B %Y à %H:%M") %></p>
       <p><strong>Durée :</strong> <%= event.duration %> minutes</p>
       <p><%= link_to "Voir les détails", event_path(event), class: 'text-blue-500 hover:underline' %></p>

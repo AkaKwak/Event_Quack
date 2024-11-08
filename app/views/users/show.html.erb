@@ -1,3 +1,22 @@
-<h1>Profil de <%= @user.first_name %></h1>
-<p>Email : <%= @user.email %></p>
-<p>Description : <%= @user.description %></p>
+<div class="container mx-auto mt-10 p-5 border rounded-lg shadow-lg bg-white">
+  <h1 class="text-4xl font-bold mb-4">Profil de <%= @user.first_name %> <%= @user.last_name %></h1>
+  
+  <p class="text-lg text-gray-700 mb-2"><strong>Email :</strong> <%= @user.email %></p>
+  <p class="text-lg text-gray-700 mb-2"><strong>Description :</strong> <%= @user.description %></p>
+
+  <h2 class="text-2xl font-bold mt-4">Événements créés :</h2>
+  <ul>
+    <% @user.events.each do |event| %>
+      <li><%= link_to event.title, event_path(event) %> - <%= event.start_date.strftime("%d %B %Y à %H:%M") %></li>
+    <% end %>
+  </ul>
+
+  <h2 class="text-2xl font-bold mt-4">Événements auxquels vous participez :</h2>
+  <ul>
+    <% @user.attended_events.each do |event| %>
+      <li><%= link_to event.title, event_path(event) %> - <%= event.start_date.strftime("%d %B %Y à %H:%M") %></li>
+    <% end %>
+  </ul>
+
+  <%= link_to 'Retour à la liste des évenements', events_path, class: "mt-3 inline-block px-4 py-2 text-blue-700 bg-blue-100 hover:bg-blue-200 rounded" %>
+</div>
