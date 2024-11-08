@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
+
   devise_for :users
 
   root "events#index"
+
   resources :events do
     resources :attendances, only: [:new, :create, :index]
   end
-  resources :users, only: [:show]
+  
+  resources :users, only: [:show, :edit, :update]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
