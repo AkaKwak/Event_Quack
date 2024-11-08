@@ -4,7 +4,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  enum role: { participant: 0, admin: 1 }
   has_many :events, foreign_key: 'user_id', class_name: 'Event', dependent: :destroy
   has_many :attendances
   has_many :attended_events, through: :attendances, source: :event
@@ -14,6 +13,6 @@ class User < ApplicationRecord
   validates :last_name, presence: true
 
   def admin?
-    role == 'admin'
+    is_admin
   end
 end
