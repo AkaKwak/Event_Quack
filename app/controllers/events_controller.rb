@@ -22,6 +22,9 @@ class EventsController < ApplicationController
     @event = Event.new(event_params)
     @event.user = current_user
     
+    current_user.role = 'author'
+    current_user.save if current_user.changed?
+    
     # Vérifiez que la durée est fournie
     if @event.start_date.present? && @event.duration.present?
       @event.end_date = @event.start_date + @event.duration.minutes
