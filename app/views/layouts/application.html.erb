@@ -20,103 +20,107 @@
     <script src="https://js.stripe.com/v3/"></script>
   </head>
 
-
   <body>
-  <header>
-    <!-- Navbar -->
-    <nav class="bg-gray-800 text-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-          <!-- Logo -->
-          <div class="flex-shrink-0 flex items-center">
-            <%= link_to "Event Quack", root_path, class: "text-xl font-semibold text-white hover:text-gray-300" %>
-          </div>
+    <header>
+      <!-- Navbar -->
+      <nav class="bg-gray-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <div class="flex-shrink-0 flex items-center">
+              <%= link_to "Event Quack", root_path, class: "text-xl font-semibold text-white hover:text-gray-300" %>
+            </div>
 
-          <!-- Navigation Links -->
-          <div class="hidden md:flex space-x-4 items-center">
-            <%= link_to "Accueil", root_path, class: "hover:text-gray-300" %>
-            <%= link_to "Créer un nouvel événement", new_event_path, class: "hover:text-gray-300" %>
+            <!-- Nom d'utilisateur centré -->
+            <div class="flex-grow text-center">
+              <% if user_signed_in? %>
+                <span class="text-lg font-semibold"><%= "#{current_user.first_name} #{current_user.last_name}" %></span>
+              <% end %>
+            </div>
 
-            <% if user_signed_in? %>
-              <%= link_to "Mon Profil", user_path(current_user), class: "hover:text-gray-300" %>
-              <%= link_to "Déconnexion", destroy_user_session_path(@resource), class: 'hover:text-gray-300 dropdown-item', data: { turbo_method: :delete, turbo_confirm: "Êtes vous sûre ?" } %>
-            <% else %>
-              <%= link_to "Connexion", new_user_session_path, class: "hover:text-gray-300" %>
-              <%= link_to "Inscription", new_user_registration_path, class: "hover:text-gray-300" %>
-            <% end %>
-          </div>
+            <!-- Navigation Links -->
+            <div class="hidden md:flex space-x-4 items-center">
+              <%= link_to "Accueil", root_path, class: "hover:text-gray-300" %>
+              <%= link_to "Créer un nouvel événement", new_event_path, class: "hover:text-gray-300" %>
 
-          <!-- Mobile Menu Button -->
-          <div class="flex items-center md:hidden">
-            <button id="mobile-menu-button" class="text-gray-400 hover:text-white focus:outline-none">
-              <!-- Icone Menu Hamburger -->
-              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-              </svg>
-            </button>
+              <% if user_signed_in? %>
+                <%= link_to "Mon Profil", user_path(current_user), class: "hover:text-gray-300" %>
+                <%= link_to "Déconnexion", destroy_user_session_path(@resource), class: 'hover:text-gray-300 dropdown-item', data: { turbo_method: :delete, turbo_confirm: "Êtes vous sûre ?" } %>
+              <% else %>
+                <%= link_to "Connexion", new_user_session_path, class: "hover:text-gray-300" %>
+                <%= link_to "Inscription", new_user_registration_path, class: "hover:text-gray-300" %>
+              <% end %>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="flex items-center md:hidden">
+              <button id="mobile-menu-button" class="text-gray-400 hover:text-white focus:outline-none">
+                <!-- Icone Menu Hamburger -->
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Mobile Menu -->
-      <div id="mobile-menu" class="md:hidden hidden">
-        <%= link_to "Accueil", root_path, class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white" %>
-        <%= link_to "Créer un nouvel événement", new_event_path, class: "hover:text-gray-300" %>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden">
+          <%= link_to "Accueil", root_path, class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white" %>
+          <%= link_to "Créer un nouvel événement", new_event_path, class: "hover:text-gray-300" %>
 
-        <% if user_signed_in? %>
-          <%= link_to "Mon Profil", user_path(current_user), class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white" %>
-          <%= link_to "Déconnexion", destroy_user_session_path(@resource), class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white", data: { turbo_method: :delete, turbo_confirm: "Êtes vous sûre ?" } %>
+          <% if user_signed_in? %>
+            <%= link_to "Mon Profil", user_path(current_user), class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white" %>
+            <%= link_to "Déconnexion", destroy_user_session_path(@resource), class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white", data: { turbo_method: :delete, turbo_confirm: "Êtes vous sûre ?" } %>
+          <% else %>
+            <%= link_to "Connexion", new_user_session_path, class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white" %>
+            <%= link_to "Inscription", new_user_registration_path, class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white" %>
+          <% end %>
+        </div>
+      </nav>
+
+      <script>
+        // Script pour gérer l'affichage du menu mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+        });
+      </script>
+    </header>
+
+    <div class="flash-messages fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-md z-50">
+      <turbo-frame id="flash">
+        <% if flash[:notice] %>
+          <p class="flash-notice bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded shadow-md">
+            <%= flash[:notice] %>
+          </p>
+        <% elsif flash[:alert] %>
+          <p class="flash-alert bg-red-100 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded shadow-md">
+            <%= flash[:alert] %>
+          </p>
+        <% elsif flash[:error] %>
+          <p class="flash-error bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 px-4 py-3 rounded shadow-md">
+            <%= flash[:error] %>
+          </p>
         <% else %>
-          <%= link_to "Connexion", new_user_session_path, class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white" %>
-          <%= link_to "Inscription", new_user_registration_path, class: "block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white" %>
+          <div style="display: none;"></div> <!-- Contenu par défaut pour éviter les erreurs -->
         <% end %>
-      </div>
-    </nav>
+      </turbo-frame>
+    </div>
 
     <script>
-      // Script pour gérer l'affichage du menu mobile
-      const mobileMenuButton = document.getElementById('mobile-menu-button');
-      const mobileMenu = document.getElementById('mobile-menu');
-
-      mobileMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
+      document.addEventListener("turbo:load", function() {
+        const flashMessages = document.querySelector("#flash");
+        if (flashMessages) {
+          setTimeout(() => {
+            flashMessages.style.opacity = '0';
+            flashMessages.style.transition = 'opacity 0.5s ease';
+          }, 3000);
+        }
       });
-      
-    </script> 
-  </header>
-<div class="flash-messages fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-md z-50">
-  <turbo-frame id="flash">
-    <% if flash[:notice] %>
-      <p class="flash-notice bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded shadow-md">
-        <%= flash[:notice] %>
-      </p>
-    <% elsif flash[:alert] %>
-      <p class="flash-alert bg-red-100 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded shadow-md">
-        <%= flash[:alert] %>
-      </p>
-    <% elsif flash[:error] %>
-      <p class="flash-error bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 px-4 py-3 rounded shadow-md">
-        <%= flash[:error] %>
-      </p>
-    <% else %>
-      <div style="display: none;"></div> <!-- Contenu par défaut pour éviter les erreurs -->
-    <% end %>
-  </turbo-frame>
-</div>
-
-<script>
-  document.addEventListener("turbo:load", function() {
-    const flashMessages = document.querySelector("#flash");
-    if (flashMessages) {
-      setTimeout(() => {
-        flashMessages.style.opacity = '0';
-        flashMessages.style.transition = 'opacity 0.5s ease';
-      }, 3000);
-    }
-  });
-</script>
-
-
+    </script>
 
     <main class="container mx-auto mt-28 px-5 flex">
       <%= yield %>

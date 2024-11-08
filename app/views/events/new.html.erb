@@ -1,7 +1,7 @@
 <% if @event.errors.any? %>
-  <div class="alert alert-danger">
-    <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
-    <ul>
+  <div class="alert alert-danger mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+    <h2 class="font-bold"><%= pluralize(@event.errors.count, "erreur") %> a empêché la sauvegarde de cet événement :</h2>
+    <ul class="list-disc list-inside">
       <% @event.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
@@ -9,25 +9,38 @@
   </div>
 <% end %>
 
-<h1>Créer un événement</h1>
-<%= form_with(model: @event, local: true) do |form| %>
-  <%= form.label :title %>
-  <%= form.text_field :title %>
+<h1 class="text-3xl font-bold mb-6">Créer un événement</h1>
 
-  <%= form.label :description %>
-  <%= form.text_area :description %>
+<%= form_with(model: @event, local: true, class: "space-y-4") do |form| %>
+  <div class="mb-4">
+    <%= form.label :title, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :title, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300" %>
+  </div>
 
-  <%= form.label :location %>
-  <%= form.text_field :location %>
+  <div class="mb-4">
+    <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :description, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300" %>
+  </div>
 
-  <%= form.label :price %>
-  <%= form.number_field :price %>
+  <div class="mb-4">
+    <%= form.label :location, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :location, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300" %>
+  </div>
 
-  <%= form.label :start_date %>
-  <%= form.datetime_select :start_date %>
+  <div class="mb-4">
+    <%= form.label :price, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.number_field :price, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300" %>
+  </div>
 
-  <%= form.label :duration %>
-  <%= form.number_field :duration %>
+  <div class="mb-4">
+    <%= form.label :start_date, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.datetime_select :start_date, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300" %>
+  </div>
 
-  <%= form.submit "Créer l'événement" %>
+  <div class="mb-4">
+    <%= form.label :duration, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.number_field :duration, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300" %>
+  </div>
+
+  <%= form.submit "Créer l'événement", class: "w-full inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
 <% end %>

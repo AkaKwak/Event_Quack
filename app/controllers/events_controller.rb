@@ -21,10 +21,10 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
     @event.user = current_user
-    
+
     current_user.role = 'author'
     current_user.save if current_user.changed?
-    
+
     # Vérifiez que la durée est fournie
     if @event.start_date.present? && @event.duration.present?
       @event.end_date = @event.start_date + @event.duration.minutes
@@ -47,16 +47,22 @@ class EventsController < ApplicationController
       render :new  # Affiche le formulaire à nouveau avec les messages d'erreur
     end
   end
-  
+
+  def edit
+    @event = Event.find(params[:id]) # Récupération de l'événement à modifier
+    # La vue 'edit' affichera le formulaire pour modifier cet événement
+  end
   
 
   def update
-    if @event.update(event_params)
-      redirect_to @event, notice: 'Événement mis à jour.'
+    @event = Event.find(params[:id]) # Récupération de l'événement à modifier
+    if @event.update(event_params) # Mise à jour des attributs de l'événement avec les paramètres du formulaire
+      redirect_to @event, notice: 'Événement mis à jour.' # Redirection vers la page de l'événement après succès
     else
-      render :edit
+      render :edit # Rappel du formulaire d'édition en cas d'erreur
     end
   end
+  
 
   def destroy
     @event.destroy
@@ -76,6 +82,6 @@ class EventsController < ApplicationController
   end
 
   def event_params
-      params.require(:event).permit(:title, :description, :location, :price, :start_date, :duration)
+    params.require(:event).permit(:title, :description, :location, :price, :start_date, :duration)
   end
 end
